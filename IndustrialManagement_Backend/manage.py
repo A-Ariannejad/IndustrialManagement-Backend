@@ -7,7 +7,6 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'IndustrialManagement_Backend.settings')
-     #just a  test2
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -17,7 +16,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-     #just a  test
+
 
 if __name__ == '__main__':
     main()
