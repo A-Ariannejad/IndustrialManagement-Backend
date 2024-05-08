@@ -215,3 +215,18 @@ SIMPLE_JWT = {
 
 
 TIME_ZONE = "Asia/Tehran"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'myemail@gmail.com'
+
+EMAIL_HOST_PASSWORD ='eaxp uvtl pibx thpi'
+DEFAULT_FROM_EMAIL = 'myemail@gmail.com'
+SERVER_EMAIL = 'myemail@gmail.com'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
