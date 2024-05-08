@@ -1,5 +1,5 @@
 from .serializers import GetCustomUserProfileSerializer, GetCustomUserSerializer, CreateCustomUserSerializer
-from CustomUserPermissions.views import IsAddSubOrganization, IsAddManager, IsAddProject, IsView
+from CustomUserPermissions.views import IsAddSubOrganization, IsAddManager, IsAddProject, IsUserAccess
 from CustomUserPermissions.models import CustomUserPermission
 from IndustrialManagement_Backend.serializers import CustomValidation
 from .models import CustomUser, LogicUser
@@ -23,18 +23,18 @@ class MyCustomUserShowView(generics.RetrieveAPIView):
 class CustomUserShowView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = GetCustomUserSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsUserAccess]
     lookup_field = 'id'
 
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-create_date')
     serializer_class = GetCustomUserSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsUserAccess]
 
 class CreateView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CreateCustomUserSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsUserAccess]
       
     def perform_create(self, serializer):
         serializer.save(password=make_password(self.request.data.get('password')))
@@ -42,7 +42,7 @@ class CreateView(generics.CreateAPIView):
 class CustomUserUpdateView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CreateCustomUserSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsUserAccess]
 
     def perform_update(self, serializer):
         serializer.save(password=make_password(self.request.data.get('password')))
@@ -50,5 +50,5 @@ class CustomUserUpdateView(generics.UpdateAPIView):
 class CustomUserDeleteView(generics.DestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = GetCustomUserProfileSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsUserAccess]
     
