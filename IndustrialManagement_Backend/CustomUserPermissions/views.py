@@ -38,11 +38,11 @@ class IsAddProject(BasePermission):
         return False
     
     
-class IsView(BasePermission):
+class IsUserAccess(BasePermission):
     def has_permission(self, request, view):
         user = LogicUser.get_user(request = request)
         if user:
-            if user.user_permissions.view:
+            if user.user_permissions.user_access:
                 return True
         return False
 

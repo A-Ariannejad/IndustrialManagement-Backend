@@ -5,4 +5,4 @@ class CustomUserPermission(models.Model):
     add_subOrganization = models.BooleanField(default=False)
     add_manager = models.BooleanField(default=False)
     add_project = models.BooleanField(default=False)
-    view = models.BooleanField(default=False)
+    user_access = models.BooleanField(default=False)
