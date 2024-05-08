@@ -1,6 +1,6 @@
 from .serializers import GetCustomUserSerializer, CreateCustomUserSerializer, LoginCustomUserSerializer, UpdateCustomUserSerializer, SetPasswordResetSerializer
 from .serializers import ChangePasswordSerializer, UpdatePermissionCustomUserSerializer, GetCustomUserProfileSerializer, PasswordResetSerializer
-from CustomUserPermissions.views import IsLogin, IsCalculator, IsController, IsSupporter, IsViewer
+from CustomUserPermissions.views import IsAddSubOrganization, IsAddManager, IsAddProject, IsView
 from CustomUserPermissions.models import CustomUserPermission
 from IndustrialManagement_Backend.serializers import CustomValidation
 from .models import CustomUser, LogicUser

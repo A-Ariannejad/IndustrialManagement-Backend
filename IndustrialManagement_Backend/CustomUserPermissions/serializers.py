@@ -4,5 +4,5 @@ from .models import CustomUserPermission
 class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUserPermission
-        fields = ['id', 'name', 'is_controller', 'is_viewer', 'is_calculator', 'is_supporter']
+        fields = ['id', 'name', 'add_subOrganization', 'add_manager', 'add_project', 'view']
         
