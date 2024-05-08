@@ -6,18 +6,18 @@ class GetCustomUserSerializer(serializers.ModelSerializer):
     user_permissions = PermissionSerializer()
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'user_permissions']
+        fields = ['id', 'email', 'user_permissions']
 
 class GetCustomUserProfileSerializer(serializers.ModelSerializer):
     user_permissions = PermissionSerializer()
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'create_date', 'user_permissions']
+        fields = ['id', 'email', 'first_name', 'last_name', 'social_id', 'education', 'phone_number', 'create_date', 'user_permissions']
 
 class CreateCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id','username','email', 'password', 'first_name', 'last_name', 'create_date', 'user_permissions']
+        fields = ['id', 'email', 'first_name', 'last_name', 'social_id', 'education', 'phone_number', 'create_date', 'user_permissions']
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)

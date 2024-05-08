@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from CustomUserPermissions.models import CustomUserPermission
+from phonenumber_field.modelfields import PhoneNumberField
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -29,9 +30,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    username = models.CharField(max_length=60, blank=True, unique=True)
-    create_date = models.DateTimeField(auto_now_add=True)
+    social_id = models.CharField(max_length=30, blank=True)
+    phone_number = PhoneNumberField(blank=True)
+    EDUCATION_CHOICES = (
+        ('BSc', 'BSc'),
+        ('Ms', 'Ms'),
+        ('PhD', 'PhD'),
+        ('Prof', 'Prof'),
+    )
+    education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
     user_permissions = models.ForeignKey(CustomUserPermission, on_delete=models.CASCADE, null=False, blank=False)
+    create_date = models.DateTimeField(auto_now_add=True)
     #############################################################################
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -45,7 +54,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'Custom Users'
 
     def __str__(self):
-        return self.username
+        return self.email
 
 class LogicUser:
     def get_user(request):
