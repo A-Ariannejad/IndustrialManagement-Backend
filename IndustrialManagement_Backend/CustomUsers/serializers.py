@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from .models import CustomUser
 from CustomUserPermissions.serializers import PermissionSerializer
-from rest_framework.exceptions import ValidationError
-
 
 class GetCustomUserSerializer(serializers.ModelSerializer):
     user_permissions = PermissionSerializer()
