@@ -1,23 +1,23 @@
 from rest_framework.permissions import BasePermission
-from CustomUsers.models import LogicUser
+from CustomUsers.models import LogicUser, CustomUser
 from rest_framework import generics, viewsets, status
 from .serializers import PermissionSerializer
 from .models import CustomUserPermission
 from IndustrialManagement_Backend.serializers import CustomValidation
 
-class IsController(BasePermission):
+class IsAddSubOrganization(BasePermission):
     def has_permission(self, request, view):
         user = LogicUser.get_user(request = request)
         if user:
-            if user.user_permissions.is_controller:
+            if user.user_permissions.add_subOrganization:
                 return True
         return False
 
-class IsViewer(BasePermission):
+class IsAddManager(BasePermission):
     def has_permission(self, request, view):
         user = LogicUser.get_user(request = request)
         if user:
-            if user.user_permissions.is_viewer:
+            if user.user_permissions.add_manager:
                 return True
         return False
     
@@ -29,19 +29,21 @@ class IsCalculator(BasePermission):
                 return True
         return False
     
-class IsSupporter(BasePermission):
+class IsAddProject(BasePermission):
     def has_permission(self, request, view):
         user = LogicUser.get_user(request = request)
         if user:
-            if user.user_permissions.is_supporter:
+            if user.user_permissions.add_project:
                 return True
         return False
     
-class IsLogin(BasePermission):
+    
+class IsView(BasePermission):
     def has_permission(self, request, view):
         user = LogicUser.get_user(request = request)
-        if user is not None:
-            return True
+        if user:
+            if user.user_permissions.view:
+                return True
         return False
 
 class PermissionShowView(generics.RetrieveAPIView):
@@ -99,5 +101,7 @@ class PermissionDeleteView(generics.DestroyAPIView):
             raise CustomValidation("User can not be deleted", "", status_code=status.HTTP_400_BAD_REQUEST)
         if instance.name == 'SuperAdmin':
             raise CustomValidation("SuperAdmin can not be deleted", "", status_code=status.HTTP_400_BAD_REQUEST)
+        permission = CustomUserPermission.objects.filter(name='User').first()
+        CustomUser.objects.filter(user_permissions__name=instance.name).all().update(user_permissions__name=permission)
         return super().perform_destroy(instance)
 
