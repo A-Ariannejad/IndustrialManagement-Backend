@@ -55,14 +55,10 @@ class PermissionCreateView(generics.CreateAPIView):
     # permission_classes = [IsEditUser]
 
     def perform_create(self, serializer):
-        instance = serializer.instance
-        if instance.name == 'User':
+        validated_data = serializer.validated_data
+        if validated_data.get('name') == 'User':
             raise CustomValidation("User is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
-        if instance.name == 'SuperAdmin':
-            raise CustomValidation("SuperAdmin is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
-        if serializer.validated_data['name'] == 'User':
-            raise CustomValidation("User is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
-        if serializer.validated_data['name'] == 'SuperAdmin':
+        if validated_data.get('name') == 'SuperAdmin':
             raise CustomValidation("SuperAdmin is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
         return super().perform_create(serializer)
 
@@ -72,14 +68,10 @@ class PermissionUpdateView(generics.UpdateAPIView):
     # permission_classes = [IsEditUser]
 
     def perform_update(self, serializer):
-        instance = serializer.instance
-        if instance.name == 'User':
+        validated_data = serializer.validated_data
+        if validated_data.get('name') == 'User':
             raise CustomValidation("User is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
-        if instance.name == 'SuperAdmin':
-            raise CustomValidation("SuperAdmin is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
-        if serializer.validated_data['name'] == 'User':
-            raise CustomValidation("User is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
-        if serializer.validated_data['name'] == 'SuperAdmin':
+        if validated_data.get('name') == 'SuperAdmin':
             raise CustomValidation("SuperAdmin is reserved", "", status_code=status.HTTP_400_BAD_REQUEST)
         return super().perform_update(serializer)
 
@@ -94,6 +86,7 @@ class PermissionDeleteView(generics.DestroyAPIView):
         if instance.name == 'SuperAdmin':
             raise CustomValidation("SuperAdmin can not be deleted", "", status_code=status.HTTP_400_BAD_REQUEST)
         permission = CustomUserPermission.objects.filter(name='User').first()
-        CustomUser.objects.filter(user_permissions__name=instance.name).all().update(user_permissions__name=permission)
+        CustomUser.objects.filter(user_permissions__name=instance.name).all().update(user_permissions=permission)
         return super().perform_destroy(instance)
+
 
