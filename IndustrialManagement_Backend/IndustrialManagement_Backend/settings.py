@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'CustomUsers',
     'CustomUserPermissions',
+    'Organizations',
 ]
 
 MIDDLEWARE = [
