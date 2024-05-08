@@ -37,22 +37,30 @@ class IsUserAccess(BasePermission):
             if user.user_permissions.user_access:
                 return True
         return False
+    
+class IsSuperAdmin(BasePermission):
+    def has_permission(self, request, view):
+        user = LogicUser.get_user(request = request)
+        if user:
+            if user.user_permissions.name == 'SuperAdmin':
+                return True
+        return False
 
 class PermissionShowView(generics.RetrieveAPIView):
     queryset = CustomUserPermission.objects.all()
     serializer_class = PermissionSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsSuperAdmin]
     lookup_field = 'id'
 
 class PermissionViewSet(viewsets.ModelViewSet):
     queryset = CustomUserPermission.objects.all()
     serializer_class = PermissionSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsSuperAdmin]
 
 class PermissionCreateView(generics.CreateAPIView):
     queryset = CustomUserPermission.objects.all()
     serializer_class = PermissionSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsSuperAdmin]
 
     def perform_create(self, serializer):
         instance = serializer.instance
@@ -69,7 +77,7 @@ class PermissionCreateView(generics.CreateAPIView):
 class PermissionUpdateView(generics.UpdateAPIView):
     queryset = CustomUserPermission.objects.all()
     serializer_class = PermissionSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsSuperAdmin]
 
     def perform_update(self, serializer):
         instance = serializer.instance
@@ -86,7 +94,7 @@ class PermissionUpdateView(generics.UpdateAPIView):
 class PermissionDeleteView(generics.DestroyAPIView):
     queryset = CustomUserPermission.objects.all()
     serializer_class = PermissionSerializer
-    # permission_classes = [IsEditUser]
+    permission_classes = [IsSuperAdmin]
 
     def perform_destroy(self, instance):
         if instance.name == 'User':
