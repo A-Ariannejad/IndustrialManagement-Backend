@@ -15,14 +15,14 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
-        permission = CustomUserPermission.objects.filter(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, view=True).first()
+        permission = CustomUserPermission.objects.filter(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, user_access=True).first()
         if permission:
             extra_fields.setdefault('user_permissions', permission)
         else:
-            extra_fields.setdefault('user_permissions', CustomUserPermission.objects.create(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, view=True))
-        User_permission = CustomUserPermission.objects.filter(name='User', add_subOrganization=False, add_manager=False, add_project=False, view=False).first()
+            extra_fields.setdefault('user_permissions', CustomUserPermission.objects.create(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, user_access=True))
+        User_permission = CustomUserPermission.objects.filter(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False).first()
         if not User_permission:
-            CustomUserPermission.objects.create(name='User', add_subOrganization=False, add_manager=False, add_project=False, view=False)
+            CustomUserPermission.objects.create(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False)
         return self.create_user(email, password, **extra_fields)
 
 
