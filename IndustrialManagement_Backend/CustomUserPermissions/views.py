@@ -21,14 +21,6 @@ class IsAddManager(BasePermission):
                 return True
         return False
     
-class IsCalculator(BasePermission):
-    def has_permission(self, request, view):
-        user = LogicUser.get_user(request = request)
-        if user:
-            if user.user_permissions.is_calculator:
-                return True
-        return False
-    
 class IsAddProject(BasePermission):
     def has_permission(self, request, view):
         user = LogicUser.get_user(request = request)

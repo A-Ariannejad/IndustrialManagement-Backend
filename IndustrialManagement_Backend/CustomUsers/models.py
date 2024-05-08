@@ -32,7 +32,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30, blank=True)
     username = models.CharField(max_length=60, blank=True, unique=True)
     create_date = models.DateTimeField(auto_now_add=True)
-    user_permissions = models.ForeignKey(CustomUserPermission, on_delete=models.CASCADE, null=True, blank=True)
+    user_permissions = models.ForeignKey(CustomUserPermission, on_delete=models.CASCADE, null=False, blank=False)
     #############################################################################
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
