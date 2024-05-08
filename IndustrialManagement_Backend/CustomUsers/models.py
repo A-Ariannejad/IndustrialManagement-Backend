@@ -1,6 +1,6 @@
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from CustomUserPermissions.models import CustomUserPermission
 
 class UserManager(BaseUserManager):
@@ -25,7 +25,6 @@ class UserManager(BaseUserManager):
             CustomUserPermission.objects.create(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False)
         return self.create_user(email, password, **extra_fields)
 
-
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=30, blank=True)
@@ -40,17 +39,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-
     REQUIRED_FIELDS = []
-
-
     class Meta:
         verbose_name = 'Custom User'
         verbose_name_plural = 'Custom Users'
 
     def __str__(self):
         return self.username
-
 
 class LogicUser:
     def get_user(request):
