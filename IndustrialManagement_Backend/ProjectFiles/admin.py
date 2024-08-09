@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import ProjectFile
 
-# Register your models here.
+class ProjectFileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'uploader', 'project', 'create_date')
+
+admin.site.register(ProjectFile, ProjectFileAdmin)
