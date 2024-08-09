@@ -3,7 +3,7 @@ from .models import Organization
 from CustomUsers.serializers import GetCustomUserSerializer
 
 class GetOrganizationSerializer(serializers.ModelSerializer):
-    boss = GetCustomUserSerializer()
+    owner = GetCustomUserSerializer()
     class Meta:
         model = Organization
         fields = '__all__'
@@ -15,5 +15,5 @@ class CreateOrganizationSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['boss'] = GetCustomUserSerializer(instance.boss).data
+        ret['owner'] = GetCustomUserSerializer(instance.owner).data
         return ret
