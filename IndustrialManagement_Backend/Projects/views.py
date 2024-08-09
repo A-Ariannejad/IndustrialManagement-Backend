@@ -1,4 +1,5 @@
-from .serializers import GetProjectSerializer, CreateProjectSerializer
+from .serializers import CreateProjectSerializer
+from IndustrialManagement_Backend.serializers import GetProjectSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import Project
 from rest_framework import generics, viewsets
