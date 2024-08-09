@@ -5,15 +5,15 @@ from CustomUserPermissions.models import CustomUserPermission
 from phonenumber_field.modelfields import PhoneNumberField
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError('The email field must be set')
-        user = self.model(email=email, **extra_fields)
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('The username field must be set')
+        user = self.model(username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
         permission = CustomUserPermission.objects.filter(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, user_access=True).first()
@@ -24,21 +24,24 @@ class UserManager(BaseUserManager):
         User_permission = CustomUserPermission.objects.filter(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False).first()
         if not User_permission:
             CustomUserPermission.objects.create(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False)
-        return self.create_user(email, password, **extra_fields)
+        return self.create_user(username, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.CharField(unique=True, max_length=50)
+    username = models.CharField(unique=True, max_length=50)
+    nickname = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    social_id = models.CharField(max_length=30, blank=True)
-    phone_number = PhoneNumberField(blank=True)
+    social_id_number = models.CharField(max_length=30, blank=True)
+    personal_id_number = models.CharField(max_length=30, blank=True)
+    mobile_phone_number = PhoneNumberField(blank=True)
+    phone_number = models.CharField(max_length=30, blank=True)
     EDUCATION_CHOICES = (
         ('BSc', 'BSc'),
         ('Ms', 'Ms'),
         ('PhD', 'PhD'),
         ('Prof', 'Prof'),
     )
-    education = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
+    education_level = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
     user_permissions = models.ForeignKey(CustomUserPermission, on_delete=models.CASCADE, null=False, blank=False)
     create_date = models.DateTimeField(auto_now_add=True)
     #############################################################################
@@ -47,14 +50,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #############################################################################
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
     class Meta:
         verbose_name = 'Custom User'
         verbose_name_plural = 'Custom Users'
 
     def __str__(self):
-        return self.email
+        return self.username
 
 class LogicUser:
     def get_user(request):
