@@ -1,12 +1,6 @@
 from rest_framework import serializers
 from .models import Organization
-from CustomUsers.serializers import GetCustomUserSerializer
-
-class GetOrganizationSerializer(serializers.ModelSerializer):
-    owner = GetCustomUserSerializer()
-    class Meta:
-        model = Organization
-        fields = '__all__'
+from IndustrialManagement_Backend.serializers import GetCustomUserSerializer
 
 class CreateOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
