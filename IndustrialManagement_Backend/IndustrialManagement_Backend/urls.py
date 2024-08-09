@@ -25,4 +25,5 @@ urlpatterns = [
     path('suborganization/', include('SubOrganizations.urls')),
     path('project/', include('Projects.urls')),
     path('realscale/', include('RealScales.urls')),
+    path('timescale/', include('TimeScales.urls')),
 ]

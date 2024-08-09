@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'SubOrganizations',
     'Projects',
     'RealScales',
+    'TimeScales',
 ]
 
 MIDDLEWARE = [
