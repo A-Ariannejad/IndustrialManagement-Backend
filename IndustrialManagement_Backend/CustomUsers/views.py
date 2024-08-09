@@ -19,18 +19,18 @@ class MyCustomUserShowView(generics.RetrieveAPIView):
 class CustomUserShowView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = GetCustomUserSerializer
-    permission_classes = [IsUserAccess]
+    # permission_classes = [IsUserAccess]
     lookup_field = 'id'
 
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-create_date')
     serializer_class = GetCustomUserSerializer
-    permission_classes = [IsUserAccess]
+    # permission_classes = [IsUserAccess]
 
 class CreateView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CreateCustomUserSerializer
-    permission_classes = [IsUserAccess]
+    # permission_classes = [IsUserAccess]
       
     def perform_create(self, serializer):
         serializer.save(password=make_password(self.request.data.get('password')))
@@ -38,7 +38,7 @@ class CreateView(generics.CreateAPIView):
 class CustomUserUpdateView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CreateCustomUserSerializer
-    permission_classes = [IsUserAccess]
+    # permission_classes = [IsUserAccess]
 
     def perform_update(self, serializer):
         serializer.save(password=make_password(self.request.data.get('password')))
@@ -46,5 +46,5 @@ class CustomUserUpdateView(generics.UpdateAPIView):
 class CustomUserDeleteView(generics.DestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = GetCustomUserProfileSerializer
-    permission_classes = [IsUserAccess]
+    # permission_classes = [IsUserAccess]
     
