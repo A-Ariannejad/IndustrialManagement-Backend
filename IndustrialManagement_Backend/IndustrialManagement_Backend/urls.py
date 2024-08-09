@@ -26,4 +26,5 @@ urlpatterns = [
     path('project/', include('Projects.urls')),
     path('realscale/', include('RealScales.urls')),
     path('timescale/', include('TimeScales.urls')),
+    path('piescale/', include('PieScales.urls')),
 ]
