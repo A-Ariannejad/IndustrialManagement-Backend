@@ -9,3 +9,6 @@ class Organization(models.Model):
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     address = models.TextField(max_length=500)
     create_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
