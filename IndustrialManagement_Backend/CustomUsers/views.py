@@ -1,4 +1,5 @@
-from .serializers import GetCustomUserProfileSerializer, GetCustomUserSerializer, CreateCustomUserSerializer
+from .serializers import GetCustomUserProfileSerializer, CreateCustomUserSerializer
+from IndustrialManagement_Backend.serializers import GetCustomUserSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import CustomUser
 from rest_framework.response import Response
