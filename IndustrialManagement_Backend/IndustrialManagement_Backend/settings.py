@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'CustomUserPermissions',
     'Organizations',
     'SubOrganizations',
+    'Projects',
 ]
 
 MIDDLEWARE = [
