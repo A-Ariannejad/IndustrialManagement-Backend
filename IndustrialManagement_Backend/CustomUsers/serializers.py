@@ -13,7 +13,7 @@ class GetCustomUserProfileSerializer(serializers.ModelSerializer):
 class CreateCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'nickname', 'first_name', 'password', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number',  'phone_number', 'education_level', 'create_date', 'user_permissions']
+        fields = ['id', 'username', 'nickname', 'first_name', 'password', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number',  'phone_number', 'education_level', 'subOrganizations', 'create_date', 'user_permissions']
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
