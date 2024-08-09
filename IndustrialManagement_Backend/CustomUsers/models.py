@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from CustomUserPermissions.models import CustomUserPermission
 from phonenumber_field.modelfields import PhoneNumberField
+# from SubOrganizations.models import SubOrganization
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -43,6 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     education_level = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
     user_permissions = models.ForeignKey(CustomUserPermission, on_delete=models.CASCADE, null=False, blank=False)
+    subOrganizations = models.ForeignKey('SubOrganizations.SubOrganization', on_delete=models.CASCADE, null=True, blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
     #############################################################################
     is_active = models.BooleanField(default=True)
