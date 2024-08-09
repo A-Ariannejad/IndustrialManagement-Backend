@@ -9,6 +9,7 @@ from Projects.models import Project
 from RealScales.models import RealScale
 from TimeScales.models import TimeScale
 from PieScales.models import PieScale
+from ProjectFiles.models import ProjectFile
 
 class CustomValidation(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -67,4 +68,11 @@ class GetPieScaleSerializer(serializers.ModelSerializer):
     project = GetProjectSerializer()
     class Meta:
         model = PieScale
+        fields = '__all__'
+
+class GetProjectFileSerializer(serializers.ModelSerializer):
+    uploader = GetCustomUserSerializer()
+    project = GetProjectSerializer()
+    class Meta:
+        model = ProjectFile
         fields = '__all__'
