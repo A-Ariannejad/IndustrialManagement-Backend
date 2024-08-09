@@ -1,5 +1,11 @@
-from rest_framework.exceptions import APIException
 from rest_framework import status
+from rest_framework import serializers
+from rest_framework.exceptions import APIException
+from CustomUserPermissions.models import CustomUserPermission
+from CustomUsers.models import CustomUser
+from Organizations.models import Organization
+from SubOrganizations.models import SubOrganization
+from Projects.models import Project
 
 class CustomValidation(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -10,3 +16,34 @@ class CustomValidation(APIException):
         if detail is not None:
             self.detail = detail
         else: self.detail = self.default_detail
+
+class GetPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUserPermission
+        fields = ['id', 'name', 'add_subOrganization', 'add_manager', 'add_project', 'user_access']
+
+class GetCustomUserSerializer(serializers.ModelSerializer):
+    user_permissions = GetPermissionSerializer()
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'user_permissions']
+
+class GetOrganizationSerializer(serializers.ModelSerializer):
+    owner = GetCustomUserSerializer()
+    class Meta:
+        model = Organization
+        fields = '__all__'
+
+class GetSubOrganizationSerializer(serializers.ModelSerializer):
+    owner = GetCustomUserSerializer()
+    organization = GetOrganizationSerializer()
+    class Meta:
+        model = SubOrganization
+        fields = '__all__'
+
+class GetProjectSerializer(serializers.ModelSerializer):
+    owner = GetCustomUserSerializer()
+    subOrganization = GetSubOrganizationSerializer()
+    class Meta:
+        model = Project
+        fields = '__all__'
