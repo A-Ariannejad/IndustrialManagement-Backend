@@ -1,4 +1,5 @@
-from .serializers import GetSubOrganizationSerializer, CreateSubOrganizationSerializer
+from .serializers import CreateSubOrganizationSerializer
+from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import SubOrganization
 from rest_framework import generics, viewsets
