@@ -23,4 +23,5 @@ urlpatterns = [
     path('permission/', include('CustomUserPermissions.urls')),
     path('organization/', include('Organizations.urls')),
     path('suborganization/', include('SubOrganizations.urls')),
+    path('project/', include('Projects.urls')),
 ]
