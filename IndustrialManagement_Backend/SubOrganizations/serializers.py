@@ -4,6 +4,7 @@ from Organizations.serializers import GetOrganizationSerializer, GetCustomUserSe
 
 class GetSubOrganizationSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()
+    organization = GetOrganizationSerializer()
     class Meta:
         model = SubOrganization
         fields = '__all__'
