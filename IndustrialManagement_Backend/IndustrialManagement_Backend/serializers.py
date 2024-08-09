@@ -6,6 +6,7 @@ from CustomUsers.models import CustomUser
 from Organizations.models import Organization
 from SubOrganizations.models import SubOrganization
 from Projects.models import Project
+from RealScales.models import RealScale
 
 class CustomValidation(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -46,4 +47,10 @@ class GetProjectSerializer(serializers.ModelSerializer):
     subOrganization = GetSubOrganizationSerializer()
     class Meta:
         model = Project
+        fields = '__all__'
+
+class GetRealScaleSerializer(serializers.ModelSerializer):
+    project = GetProjectSerializer()
+    class Meta:
+        model = RealScale
         fields = '__all__'
