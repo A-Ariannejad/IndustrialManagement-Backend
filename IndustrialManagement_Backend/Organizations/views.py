@@ -1,4 +1,5 @@
-from .serializers import GetOrganizationSerializer, CreateOrganizationSerializer
+from .serializers import CreateOrganizationSerializer
+from IndustrialManagement_Backend.serializers import GetOrganizationSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import Organization
 from rest_framework import generics, viewsets

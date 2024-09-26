@@ -1,5 +1,15 @@
-from rest_framework.exceptions import APIException
 from rest_framework import status
+from rest_framework import serializers
+from rest_framework.exceptions import APIException
+from CustomUserPermissions.models import CustomUserPermission
+from CustomUsers.models import CustomUser
+from Organizations.models import Organization
+from SubOrganizations.models import SubOrganization
+from Projects.models import Project
+from RealScales.models import RealScale
+from TimeScales.models import TimeScale
+from PieScales.models import PieScale
+from ProjectFiles.models import ProjectFile
 
 class CustomValidation(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -56,7 +66,6 @@ class GetSubOrganization_ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
-
 
 class GetProjectSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()

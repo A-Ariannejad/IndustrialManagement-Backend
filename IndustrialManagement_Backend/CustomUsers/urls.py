@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateView, CustomUserViewSet, CustomUserUpdateView, CustomUserShowView, CustomUserDeleteView, MyCustomUserShowView
+from .views import CreateView, CustomUserViewSet, CustomUserUpdateView, CustomUserShowView, CustomUserDeleteView, MyCustomUserShowView, CustomUserAdminViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -9,6 +9,7 @@ urlpatterns = [
     path('myshow/', MyCustomUserShowView.as_view(), name='myshow'),
     path('show/<int:id>/', CustomUserShowView.as_view(), name='show'),
     path('list/', CustomUserViewSet.as_view({'get': 'list'}), name='list'),
+    path('adminlist/', CustomUserAdminViewSet.as_view({'get': 'list'}), name='adminlist'),
     path('create/', CreateView.as_view(), name='create'),
     path('update/<int:pk>/', CustomUserUpdateView.as_view(), name='update'),
     path('delete/<int:pk>/', CustomUserDeleteView.as_view(), name='delete'),

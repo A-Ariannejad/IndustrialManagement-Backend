@@ -1,4 +1,5 @@
-from .serializers import GetCustomUserProfileSerializer, GetCustomUserSerializer, CreateCustomUserSerializer
+from .serializers import GetCustomUserProfileSerializer, CreateCustomUserSerializer
+from IndustrialManagement_Backend.serializers import GetCustomUserSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import CustomUser
 from rest_framework.response import Response
@@ -25,6 +26,11 @@ class CustomUserShowView(generics.RetrieveAPIView):
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('-create_date')
     serializer_class = GetCustomUserSerializer
+    # permission_classes = [IsUserAccess]
+
+class CustomUserAdminViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all().order_by('-create_date')
+    serializer_class = GetCustomUserProfileSerializer
     # permission_classes = [IsUserAccess]
 
 class CreateView(generics.CreateAPIView):

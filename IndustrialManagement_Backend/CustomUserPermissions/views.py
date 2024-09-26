@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 from CustomUsers.models import LogicUser, CustomUser
 from rest_framework import generics, viewsets, status
-from .serializers import PermissionSerializer
+from IndustrialManagement_Backend.serializers import GetPermissionSerializer
 from .models import CustomUserPermission
 from IndustrialManagement_Backend.serializers import CustomValidation
 
@@ -48,18 +48,18 @@ class IsSuperAdmin(BasePermission):
 
 class PermissionShowView(generics.RetrieveAPIView):
     queryset = CustomUserPermission.objects.all()
-    serializer_class = PermissionSerializer
+    serializer_class = GetPermissionSerializer
     permission_classes = [IsSuperAdmin]
     lookup_field = 'id'
 
 class PermissionViewSet(viewsets.ModelViewSet):
     queryset = CustomUserPermission.objects.all()
-    serializer_class = PermissionSerializer
+    serializer_class = GetPermissionSerializer
     permission_classes = [IsSuperAdmin]
 
 class PermissionCreateView(generics.CreateAPIView):
     queryset = CustomUserPermission.objects.all()
-    serializer_class = PermissionSerializer
+    serializer_class = GetPermissionSerializer
     permission_classes = [IsSuperAdmin]
 
     def perform_create(self, serializer):
@@ -72,7 +72,7 @@ class PermissionCreateView(generics.CreateAPIView):
 
 class PermissionUpdateView(generics.UpdateAPIView):
     queryset = CustomUserPermission.objects.all()
-    serializer_class = PermissionSerializer
+    serializer_class = GetPermissionSerializer
     permission_classes = [IsSuperAdmin]
 
     def perform_update(self, serializer):
@@ -85,7 +85,7 @@ class PermissionUpdateView(generics.UpdateAPIView):
 
 class PermissionDeleteView(generics.DestroyAPIView):
     queryset = CustomUserPermission.objects.all()
-    serializer_class = PermissionSerializer
+    serializer_class = GetPermissionSerializer
     permission_classes = [IsSuperAdmin]
 
     def perform_destroy(self, instance):

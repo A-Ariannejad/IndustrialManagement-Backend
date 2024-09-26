@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +25,9 @@ urlpatterns = [
     path('permission/', include('CustomUserPermissions.urls')),
     path('organization/', include('Organizations.urls')),
     path('suborganization/', include('SubOrganizations.urls')),
-]
+    path('project/', include('Projects.urls')),
+    path('realscale/', include('RealScales.urls')),
+    path('timescale/', include('TimeScales.urls')),
+    path('piescale/', include('PieScales.urls')),
+    path('projectfile/', include('ProjectFiles.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

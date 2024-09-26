@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -78,6 +78,11 @@ INSTALLED_APPS = [
     'CustomUserPermissions',
     'Organizations',
     'SubOrganizations',
+    'Projects',
+    'RealScales',
+    'TimeScales',
+    'PieScales',
+    'ProjectFiles',
 ]
 
 MIDDLEWARE = [
@@ -161,6 +166,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = 'ProjectFiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'ProjectFiles/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
