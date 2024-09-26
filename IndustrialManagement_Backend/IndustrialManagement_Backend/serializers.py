@@ -41,21 +41,18 @@ class GetOrganizationSerializer(serializers.ModelSerializer):
 class GetSubOrganizationSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()
     organization = GetOrganizationSerializer()
+    
     class Meta:
         model = SubOrganization
         fields = '__all__'
-
+    
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        users = CustomUser.objects.filter(subOrganizations=instance.id).all()
+        users = instance.customuser_set.all()
         people = []
-        for x in users:
-            z = {}
-            projects = Project.objects.filter(subOrganization=instance.id, owner=x.id).all()
-            if projects is None:
-                break
-            z['person'] = GetCustomUserSerializer(x).data
-            z['person']['projects'] = GetSubOrganization_ProjectSerializer(projects, many=True).data
+        for user in users:
+            z = GetCustomUserSerializer(user).data
+            z['projects'] = GetSubOrganization_ProjectSerializer(user.project_set.all(), many=True).data
             people.append(z)
         ret['people'] = people
         ret['owner'] = GetCustomUserSerializer(instance.owner).data
