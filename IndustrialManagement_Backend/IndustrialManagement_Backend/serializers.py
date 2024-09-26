@@ -38,6 +38,23 @@ class GetOrganizationSerializer(serializers.ModelSerializer):
         model = Organization
         fields = '__all__'
 
+class GetCustomUser_ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+class GetSubOrganization_CustomUserSerializer(serializers.ModelSerializer):
+    user_permissions = GetPermissionSerializer()
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'user_permissions']
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['projects'] = GetCustomUser_ProjectSerializer(instance.project_set.all(), many=True).data
+        return ret
+
+
 class GetSubOrganizationSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()
     organization = GetOrganizationSerializer()
@@ -49,20 +66,11 @@ class GetSubOrganizationSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         users = instance.customuser_set.all()
-        people = []
-        for user in users:
-            z = GetCustomUserSerializer(user).data
-            z['projects'] = GetSubOrganization_ProjectSerializer(user.project_set.all(), many=True).data
-            people.append(z)
-        ret['people'] = people
+        ret['people'] = GetSubOrganization_CustomUserSerializer(users, many=True).data
         ret['owner'] = GetCustomUserSerializer(instance.owner).data
         ret['organization'] = GetOrganizationSerializer(instance.organization).data
         return ret
     
-class GetSubOrganization_ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = '__all__'
 
 class GetProjectSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()
