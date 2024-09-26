@@ -28,6 +28,11 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     serializer_class = GetCustomUserSerializer
     # permission_classes = [IsUserAccess]
 
+class CustomUserAdminViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all().order_by('-create_date')
+    serializer_class = GetCustomUserProfileSerializer
+    # permission_classes = [IsUserAccess]
+
 class CreateView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CreateCustomUserSerializer
