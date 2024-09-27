@@ -1,17 +1,27 @@
 from .serializers import CreateSubOrganizationSerializer
 from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer
+from Projects.models import CustomUser, Project
 from CustomUserPermissions.views import IsUserAccess
 from .models import SubOrganization
+from django.db.models import Prefetch
 from rest_framework import generics, viewsets
 
 class SubOrganizationShowView(generics.RetrieveAPIView):
-    queryset = SubOrganization.objects.all()
+    queryset = SubOrganization.objects.prefetch_related(
+    Prefetch('customuser_set', queryset=CustomUser.objects.prefetch_related(
+        Prefetch('project_set', queryset=Project.objects.all())
+    ))
+).all()
     serializer_class = GetSubOrganizationSerializer
     # permission_classes = [IsUserAccess]
     lookup_field = 'id'
 
 class SubOrganizationViewSet(viewsets.ModelViewSet):
-    queryset = SubOrganization.objects.all().order_by('-create_date')
+    queryset = SubOrganization.objects.prefetch_related(
+    Prefetch('customuser_set', queryset=CustomUser.objects.prefetch_related(
+        Prefetch('project_set', queryset=Project.objects.all())
+    ))
+).all().order_by('-create_date')
     serializer_class = GetSubOrganizationSerializer
     # permission_classes = [IsUserAccess]
 
