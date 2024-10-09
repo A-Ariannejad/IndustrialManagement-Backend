@@ -1,4 +1,4 @@
-from .serializers import GetCustomUserProfileSerializer, CreateCustomUserSerializer
+from .serializers import GetCustomUserProfileSerializer, CreateCustomUserSerializer, UpdateCustomUserSerializer
 from IndustrialManagement_Backend.serializers import GetCustomUserSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import CustomUser
@@ -43,11 +43,15 @@ class CreateView(generics.CreateAPIView):
 
 class CustomUserUpdateView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CreateCustomUserSerializer
+    serializer_class = UpdateCustomUserSerializer
     # permission_classes = [IsUserAccess]
-
     def perform_update(self, serializer):
-        serializer.save(password=make_password(self.request.data.get('password')))
+        new_password = self.request.data.get('password')
+        if new_password:
+            serializer.save(password=make_password(self.request.data.get('password')))
+        else:
+            user = CustomUser.objects.filter(id=self.kwargs['pk']).first()
+            serializer.save(password=user.password)
     
 class CustomUserDeleteView(generics.DestroyAPIView):
     queryset = CustomUser.objects.all()
