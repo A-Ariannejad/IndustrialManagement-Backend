@@ -20,3 +20,15 @@ class CreateCustomUserSerializer(serializers.ModelSerializer):
         permissions = instance.user_permissions
         ret['user_permissions'] = GetPermissionSerializer(permissions).data
         return ret
+    
+class UpdateCustomUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(required=False, allow_blank=True, write_only=True)
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'nickname', 'first_name', 'password', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number',  'phone_number', 'education_level', 'subOrganizations', 'create_date', 'user_permissions']
+    
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        permissions = instance.user_permissions
+        ret['user_permissions'] = GetPermissionSerializer(permissions).data
+        return ret
