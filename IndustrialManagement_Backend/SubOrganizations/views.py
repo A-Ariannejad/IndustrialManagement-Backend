@@ -1,5 +1,5 @@
 from .serializers import CreateSubOrganizationSerializer
-from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer
+from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer
 from Projects.models import CustomUser, Project
 from CustomUserPermissions.views import IsUserAccess
 from .models import SubOrganization
@@ -23,6 +23,11 @@ class SubOrganizationViewSet(viewsets.ModelViewSet):
     ))
 ).all().order_by('-create_date')
     serializer_class = GetSubOrganizationSerializer
+    # permission_classes = [IsUserAccess]
+
+class SelectSubOrganizationViewSet(viewsets.ModelViewSet):
+    queryset = SubOrganization.objects.all()
+    serializer_class = GetSelectSubOrganizationSerializer
     # permission_classes = [IsUserAccess]
 
 class SubOrganizationCreateView(generics.CreateAPIView):
