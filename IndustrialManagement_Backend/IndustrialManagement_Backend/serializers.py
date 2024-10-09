@@ -47,7 +47,7 @@ class GetSubOrganization_CustomUserSerializer(serializers.ModelSerializer):
     user_permissions = GetPermissionSerializer()
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'user_permissions']
+        fields = ['id', 'username', 'user_permissions', 'education_level', 'mobile_phone_number']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -71,6 +71,10 @@ class GetSubOrganizationSerializer(serializers.ModelSerializer):
         ret['organization'] = GetOrganizationSerializer(instance.organization).data
         return ret
     
+class GetSelectSubOrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubOrganization
+        fields = ['id', 'nickname']
 
 class GetProjectSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()
