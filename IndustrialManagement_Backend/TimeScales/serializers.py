@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import TimeScale
 from IndustrialManagement_Backend.serializers import GetProjectSerializer
 
+class GetTimeScaleWithoutProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeScale
+        fields = '__all__'
+
 class CreateTimeScaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeScale

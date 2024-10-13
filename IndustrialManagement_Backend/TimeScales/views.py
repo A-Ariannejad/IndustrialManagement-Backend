@@ -1,4 +1,4 @@
-from .serializers import CreateTimeScaleSerializer
+from .serializers import CreateTimeScaleSerializer, GetTimeScaleWithoutProjectSerializer
 from IndustrialManagement_Backend.serializers import GetTimeScaleSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import TimeScale
@@ -14,6 +14,14 @@ class TimeScaleViewSet(viewsets.ModelViewSet):
     queryset = TimeScale.objects.all().order_by('-create_date')
     serializer_class = GetTimeScaleSerializer
     # permission_classes = [IsUserAccess]
+
+class TimeScaleShowByProjectViewSet(viewsets.ModelViewSet):
+    serializer_class = GetTimeScaleWithoutProjectSerializer
+    # permission_classes = [IsUserAccess]
+
+    def get_queryset(self):
+        queryset = TimeScale.objects.filter(project=self.kwargs['pk']).all().order_by('-create_date')
+        return queryset
 
 class TimeScaleCreateView(generics.CreateAPIView):
     queryset = TimeScale.objects.all()
