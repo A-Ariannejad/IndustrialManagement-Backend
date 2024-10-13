@@ -1,4 +1,4 @@
-from .serializers import CreatePieScaleSerializer
+from .serializers import CreatePieScaleSerializer, GetPieScaleWithoutProjectSerializer
 from IndustrialManagement_Backend.serializers import GetPieScaleSerializer
 from CustomUserPermissions.views import IsUserAccess
 from .models import PieScale
@@ -14,6 +14,14 @@ class PieScaleViewSet(viewsets.ModelViewSet):
     queryset = PieScale.objects.all().order_by('-create_date')
     serializer_class = GetPieScaleSerializer
     # permission_classes = [IsUserAccess]
+
+class PieScaleShowByProjectViewSet(viewsets.ModelViewSet):
+    serializer_class = GetPieScaleWithoutProjectSerializer
+    # permission_classes = [IsUserAccess]
+
+    def get_queryset(self):
+        queryset = PieScale.objects.filter(project=self.kwargs['pk']).all().order_by('-create_date')
+        return queryset
 
 class PieScaleCreateView(generics.CreateAPIView):
     queryset = PieScale.objects.all()
