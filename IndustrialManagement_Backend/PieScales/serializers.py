@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import PieScale
 from IndustrialManagement_Backend.serializers import GetProjectSerializer
 
+class GetPieScaleWithoutProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PieScale
+        fields = '__all__'
+
 class CreatePieScaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = PieScale

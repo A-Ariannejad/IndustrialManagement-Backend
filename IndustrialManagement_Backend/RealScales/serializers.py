@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import RealScale
 from IndustrialManagement_Backend.serializers import GetProjectSerializer
 
+class GetRealScaleWithoutProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RealScale
+        fields = '__all__'
+
 class CreateRealScaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = RealScale

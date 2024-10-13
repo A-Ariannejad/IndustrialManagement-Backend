@@ -3,7 +3,7 @@ from .views import TimeScaleCreateView, TimeScaleViewSet, TimeScaleUpdateView, T
 
 urlpatterns = [
     path('show/<int:id>/', TimeScaleShowView.as_view(), name='show'),
-    path('showbyprojec/<int:pk>/', TimeScaleShowByProjectViewSet.as_view({'get': 'list'}), name='showbyprojec'),
+    path('showbyproject/<int:pk>/', TimeScaleShowByProjectViewSet.as_view({'get': 'list'}), name='showbyproject'),
     path('list/', TimeScaleViewSet.as_view({'get': 'list'}), name='list'),
     path('create/', TimeScaleCreateView.as_view(), name='create'),
     path('update/<int:pk>/', TimeScaleUpdateView.as_view(), name='update'),
