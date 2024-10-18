@@ -1,6 +1,5 @@
 from .serializers import CreateTimeScaleSerializer, GetTimeScaleWithoutProjectSerializer
 from IndustrialManagement_Backend.serializers import GetTimeScaleSerializer
-from CustomUserPermissions.views import IsUserAccess
 from .models import TimeScale
 from rest_framework import generics, viewsets
 
@@ -27,6 +26,11 @@ class TimeScaleCreateView(generics.CreateAPIView):
     queryset = TimeScale.objects.all()
     serializer_class = CreateTimeScaleSerializer
     # permission_classes = [IsUserAccess]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
 
 class TimeScaleUpdateView(generics.UpdateAPIView):
     queryset = TimeScale.objects.all()
