@@ -14,5 +14,5 @@ class CreateRealScaleSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['project'] = GetProjectSerializer(instance.project).data
+        ret['project'] = GetProjectSerializer(instance.project, context={'request': self.context['request'], 'sub_org': instance.project.subOrganization}).data
         return ret
