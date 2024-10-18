@@ -1,6 +1,5 @@
 from .serializers import CreatePieScaleSerializer, GetPieScaleWithoutProjectSerializer
 from IndustrialManagement_Backend.serializers import GetPieScaleSerializer
-from CustomUserPermissions.views import IsUserAccess
 from .models import PieScale
 from rest_framework import generics, viewsets
 
@@ -27,6 +26,11 @@ class PieScaleCreateView(generics.CreateAPIView):
     queryset = PieScale.objects.all()
     serializer_class = CreatePieScaleSerializer
     # permission_classes = [IsUserAccess]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
 
 class PieScaleUpdateView(generics.UpdateAPIView):
     queryset = PieScale.objects.all()
