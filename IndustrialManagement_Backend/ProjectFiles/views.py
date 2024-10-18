@@ -1,6 +1,5 @@
 from .serializers import CreateProjectFileSerializer
 from IndustrialManagement_Backend.serializers import GetProjectFileSerializer
-from CustomUserPermissions.views import IsUserAccess
 from .models import ProjectFile
 from rest_framework import generics, viewsets
 
