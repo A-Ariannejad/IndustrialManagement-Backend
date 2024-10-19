@@ -8,12 +8,12 @@ class GetCustomUserProfileSerializer(serializers.ModelSerializer):
     projects = GetProjectSerializer(many=True)
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'projects', 'subOrganizations', 'create_date']
+        fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'is_superuser', 'projects', 'subOrganizations', 'create_date']
 
 class CreateCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'nickname', 'first_name', 'password', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'projects', 'subOrganizations', 'create_date']
+        fields = ['id', 'username', 'nickname', 'first_name', 'password', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'is_superuser', 'projects', 'subOrganizations', 'create_date']
     
 class UpdateCustomUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False, allow_blank=True, allow_null=True)
@@ -24,5 +24,5 @@ class UpdateCustomUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False, allow_blank=True, write_only=True)
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'password', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'projects', 'subOrganizations', 'create_date']
+        fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'password', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'is_superuser', 'projects', 'subOrganizations', 'create_date']
     
