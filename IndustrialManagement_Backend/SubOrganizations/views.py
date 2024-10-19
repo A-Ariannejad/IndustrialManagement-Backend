@@ -1,10 +1,10 @@
 from .serializers import CreateSubOrganizationSerializer
-from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer
+from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer, CustomValidation
 from Projects.models import CustomUser, Project
 from CustomUsers.permissions import IsAdmin
 from .models import SubOrganization
 from django.db.models import Prefetch
-from rest_framework import generics, viewsets, permissions
+from rest_framework import generics, viewsets, permissions, status
 from django.db.models import Q
 
 def subOrganization_permission_type_queryset(self):
@@ -76,4 +76,12 @@ class SubOrganizationDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return subOrganization_permission_type_queryset(self=self)
+    
+    def perform_destroy(self, instance):
+        subOrganization_id = self.kwargs['pk']
+        subOrganization = SubOrganization.objects.filter(id=subOrganization_id).first()
+        projects = Project.objects.filter(subOrganization=subOrganization).first()
+        if projects:
+            raise CustomValidation("مرکز با پروژه قابل پاک کردن نیست", "", status_code=status.HTTP_400_BAD_REQUEST)
+        return super().perform_destroy(instance)
     
