@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import ProjectFile
 from IndustrialManagement_Backend.serializers import GetProjectSerializer, GetCustomUserSerializer
 
+class GetProjectFileWithoutProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectFile
+        fields = '__all__'
+
 class CreateProjectFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectFile
