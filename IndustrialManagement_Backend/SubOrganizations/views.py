@@ -1,9 +1,9 @@
 from .serializers import CreateSubOrganizationSerializer
-from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer
+from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer, CustomValidation
 from Projects.models import CustomUser, Project
-from .models import SubOrganization
+from .models import SubOrganization, Organization
 from django.db.models import Prefetch
-from rest_framework import generics, viewsets, permissions
+from rest_framework import generics, viewsets, permissions, status
 from django.db.models import Q
 
 def subOrganization_permission_type_queryset(self):
@@ -67,8 +67,12 @@ class SubOrganizationCreateView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         user = self.request.user
-        if user.admin or #owner
-        return super().perform_create(serializer)
+        organization_id = self.request.data.get('organization')
+        organization = Organization.objects.get(id=organization_id)
+        if user.admin or organization.owner == user:
+            serializer.save(owner=user, organization=organization)
+        else:
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
 
 class SubOrganizationUpdateView(generics.UpdateAPIView):
     queryset = SubOrganization.objects.all()
