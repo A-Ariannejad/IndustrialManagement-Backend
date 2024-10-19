@@ -1,7 +1,8 @@
 from .serializers import CreateSubOrganizationSerializer
 from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer, CustomValidation
 from Projects.models import CustomUser, Project
-from .models import SubOrganization, Organization
+from CustomUsers.permissions import IsAdmin
+from .models import SubOrganization
 from django.db.models import Prefetch
 from rest_framework import generics, viewsets, permissions, status
 from django.db.models import Q
@@ -55,50 +56,24 @@ class SelectSubOrganizationViewSet(viewsets.ModelViewSet):
 class SubOrganizationCreateView(generics.CreateAPIView):
     queryset = SubOrganization.objects.all()
     serializer_class = CreateSubOrganizationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
 
     def get_queryset(self):
         return subOrganization_permission_type_queryset(self=self) 
-    
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['request'] = self.request
-        return context
-    
-    def perform_create(self, serializer):
-        user = self.request.user
-        if user.admin:
-            return super().perform_create(serializer)
-        else:
-            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
     
 class SubOrganizationUpdateView(generics.UpdateAPIView):
     queryset = SubOrganization.objects.all()
     serializer_class = CreateSubOrganizationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
 
     def get_queryset(self):
         return subOrganization_permission_type_queryset(self=self) 
     
-    def perform_update(self, serializer):
-        user = self.request.user
-        if user.admin:
-            return super().perform_update(serializer)
-        else:
-            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
-    
 class SubOrganizationDeleteView(generics.DestroyAPIView):
     queryset = SubOrganization.objects.all()
     serializer_class = GetSubOrganizationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
 
     def get_queryset(self):
         return subOrganization_permission_type_queryset(self=self)
-    
-    def perform_destroy(self, instance):
-        user = self.request.user
-        if user.admin:
-            return super().perform_destroy(instance)
-        else:
-            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
     
