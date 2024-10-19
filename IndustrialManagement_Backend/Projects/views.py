@@ -1,5 +1,5 @@
 from .serializers import CreateProjectSerializer
-from IndustrialManagement_Backend.serializers import GetProjectSerializer, CustomValidation
+from IndustrialManagement_Backend.serializers import GetProjectSerializer, CustomValidation, CustomUser, SubOrganization
 from .models import Project
 from rest_framework import generics, viewsets, permissions, status
 from django.db.models import Q
@@ -43,6 +43,15 @@ class ProjectCreateView(generics.CreateAPIView):
 
     def get_queryset(self):
         return project_permission_type_queryset(self=self)
+    
+    def perform_create(self, serializer):
+        owner_id = self.request.data.get('owner')
+        owner = CustomUser.objects.filter(id=owner_id).first()
+        subOrganization_id = self.request.data.get('subOrganization')
+        subOrganization = SubOrganization.objects.filter(id=subOrganization_id).first()
+        if owner.subOrganizations != subOrganization:
+            raise CustomValidation("این فرد عضو این مرکز نمیباشد", "", status_code=status.HTTP_400_BAD_REQUEST)
+        return super().perform_create(serializer)
 
 class ProjectUpdateView(generics.UpdateAPIView):
     queryset = Project.objects.all()
