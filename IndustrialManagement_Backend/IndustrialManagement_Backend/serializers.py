@@ -70,7 +70,6 @@ class GetSubOrganization_CustomUserSerializer(serializers.ModelSerializer):
 
 class GetSubOrganizationSerializer(serializers.ModelSerializer):
     owner = GetCustomUserSerializer()
-    # organization = GetOrganizationSerializer()
     
     class Meta:
         model = SubOrganization
