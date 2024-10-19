@@ -11,6 +11,13 @@ from PieScales.models import PieScale
 from ProjectFiles.models import ProjectFile
 from django.db.models import Q
 
+def scale_type_queryset(self):
+    user = self.request.user
+    if user.admin:
+        return self.queryset
+    user_projects = Project.objects.filter(Q(owner=user) | Q(id__in=user.projects.all()))
+    return self.queryset.filter(project__in=user_projects)
+
 class CustomValidation(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     default_detail = 'A server error occurred.'
@@ -24,7 +31,7 @@ class CustomValidation(APIException):
 class GetCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'admin', 'crud_project', 'projects']
+        fields = ['id', 'username', 'admin', 'crud_project', 'is_superuser', 'projects']
 
 class GetOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
