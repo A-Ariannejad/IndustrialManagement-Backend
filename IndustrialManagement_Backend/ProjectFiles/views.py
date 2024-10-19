@@ -35,6 +35,11 @@ class ProjectFileCreateView(generics.CreateAPIView):
     serializer_class = CreateProjectFileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+    
     def perform_create(self, serializer):
         user = self.request.user
         project_id = self.request.data.get('project')
