@@ -1,8 +1,9 @@
 from .serializers import CreateProjectSerializer
-from IndustrialManagement_Backend.serializers import GetProjectSerializer
+from IndustrialManagement_Backend.serializers import GetProjectSerializer, CustomValidation
 from .models import Project
-from rest_framework import generics, viewsets, permissions
+from rest_framework import generics, viewsets, permissions, status
 from django.db.models import Q
+from CustomUsers.permissions import IsAdmin
 
 def project_permission_type_queryset(self):
         user = self.request.user
@@ -38,7 +39,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class ProjectCreateView(generics.CreateAPIView):
     queryset = Project.objects.all()
     serializer_class = CreateProjectSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
 
     def get_queryset(self):
         return project_permission_type_queryset(self=self)
@@ -51,6 +52,15 @@ class ProjectUpdateView(generics.UpdateAPIView):
     def get_queryset(self):
         return project_permission_type_queryset(self=self)
     
+    def perform_update(self, serializer):
+        user = self.request.user
+        project_id = self.kwargs['pk']
+        project = Project.objects.get(id=project_id)
+        if user.admin or project.owner == user or user.crud_project and project in user.projects.all():
+            return super().perform_update(serializer)
+        else:
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
+    
 class ProjectDeleteView(generics.DestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = GetProjectSerializer
@@ -58,4 +68,13 @@ class ProjectDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return project_permission_type_queryset(self=self)
+    
+    def perform_destroy(self, instance):
+        user = self.request.user
+        project_id = self.kwargs['pk']
+        project = Project.objects.get(id=project_id)
+        if user.admin or project.owner == user or user.crud_project and project in user.projects.all():
+            return super().perform_destroy(instance)
+        else:
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
     
