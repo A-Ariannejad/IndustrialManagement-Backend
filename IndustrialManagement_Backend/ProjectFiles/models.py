@@ -11,8 +11,8 @@ def validate_file_extension(value):
 class ProjectFile(models.Model):
     name = models.CharField(max_length=100)
     file = models.FileField(upload_to='files/', validators=[validate_file_extension])
-    uploader = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    uploader = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.DO_NOTHING, null=True, blank=True)
     description = models.TextField(max_length=500)
     create_date = models.DateTimeField(auto_now_add=True)
 
