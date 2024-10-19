@@ -1,13 +1,13 @@
 from .serializers import CreatePieScaleSerializer, GetPieScaleWithoutProjectSerializer
 from IndustrialManagement_Backend.serializers import GetPieScaleSerializer, CustomValidation, scale_type_queryset
 from .models import PieScale, Project
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, viewsets, status, permissions
 from django.db.models import Q
 
 class PieScaleShowView(generics.RetrieveAPIView):
     queryset = PieScale.objects.all()
     serializer_class = GetPieScaleSerializer
-    # permission_classes = [IsUserAccess]
+    permission_classes = [permissions.IsAuthenticated]
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -16,14 +16,14 @@ class PieScaleShowView(generics.RetrieveAPIView):
 class PieScaleViewSet(viewsets.ModelViewSet):
     queryset = PieScale.objects.all().order_by('-create_date')
     serializer_class = GetPieScaleSerializer
-    # permission_classes = [IsUserAccess]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return scale_type_queryset(self=self)
 
 class PieScaleShowByProjectViewSet(viewsets.ModelViewSet):
     serializer_class = GetPieScaleWithoutProjectSerializer
-    # permission_classes = [IsUserAccess]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         self.queryset = PieScale.objects.all()
@@ -34,7 +34,7 @@ class PieScaleShowByProjectViewSet(viewsets.ModelViewSet):
 class PieScaleCreateView(generics.CreateAPIView):
     queryset = PieScale.objects.all()
     serializer_class = CreatePieScaleSerializer
-    # permission_classes = [IsUserAccess]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -54,7 +54,7 @@ class PieScaleCreateView(generics.CreateAPIView):
 class PieScaleUpdateView(generics.UpdateAPIView):
     queryset = PieScale.objects.all()
     serializer_class = CreatePieScaleSerializer
-    # permission_classes = [IsUserAccess]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_update(self, serializer):
         user = self.request.user
@@ -69,7 +69,7 @@ class PieScaleUpdateView(generics.UpdateAPIView):
 class PieScaleDeleteView(generics.DestroyAPIView):
     queryset = PieScale.objects.all()
     serializer_class = GetPieScaleSerializer
-    # permission_classes = [IsUserAccess]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_destroy(self, instance):
         user = self.request.user
