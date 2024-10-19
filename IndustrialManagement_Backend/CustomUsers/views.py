@@ -1,5 +1,5 @@
 from .serializers import GetCustomUserProfileSerializer, CreateCustomUserSerializer, UpdateCustomUserSerializer
-from IndustrialManagement_Backend.serializers import GetCustomUserSerializer
+from IndustrialManagement_Backend.serializers import GetCustomUserSerializer, Organization, SubOrganization, Project, CustomValidation
 from .models import CustomUser
 from .permissions import IsSuperAdmin
 from rest_framework.response import Response
@@ -68,4 +68,14 @@ class CustomUserDeleteView(generics.DestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = GetCustomUserProfileSerializer
     permission_classes = [permissions.IsAuthenticated, IsSuperAdmin]
+    
+    def perform_destroy(self, instance):
+        user_id = self.kwargs['pk']
+        user = CustomUser.objects.filter(id=user_id).first()
+        organizations = Organization.objects.filter(owner=user).first()
+        subOrganizations = SubOrganization.objects.filter(owner=user).first()
+        projects = Project.objects.filter(owner=user).first()
+        if organizations or subOrganizations or projects:
+            raise CustomValidation("کاربر صاحب سازمان یا مرکز یا پروژه قابل پاک کردن نیست", "", status_code=status.HTTP_400_BAD_REQUEST)
+        return super().perform_destroy(instance)
     
