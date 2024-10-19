@@ -59,7 +59,7 @@ class ProjectUpdateView(generics.UpdateAPIView):
         if user.admin or project.owner == user or user.crud_project and project in user.projects.all():
             return super().perform_update(serializer)
         else:
-            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_403_FORBIDDEN)
     
 class ProjectDeleteView(generics.DestroyAPIView):
     queryset = Project.objects.all()
@@ -76,5 +76,5 @@ class ProjectDeleteView(generics.DestroyAPIView):
         if user.admin or project.owner == user or user.crud_project and project in user.projects.all():
             return super().perform_destroy(instance)
         else:
-            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_403_FORBIDDEN)
     
