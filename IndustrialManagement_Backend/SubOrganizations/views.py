@@ -1,10 +1,10 @@
 from .serializers import CreateSubOrganizationSerializer
-from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer, CustomValidation
+from IndustrialManagement_Backend.serializers import GetSubOrganizationSerializer, GetSelectSubOrganizationSerializer
 from Projects.models import CustomUser, Project
 from CustomUsers.permissions import IsAdmin
 from .models import SubOrganization
 from django.db.models import Prefetch
-from rest_framework import generics, viewsets, permissions, status
+from rest_framework import generics, viewsets, permissions
 from django.db.models import Q
 
 def subOrganization_permission_type_queryset(self):
