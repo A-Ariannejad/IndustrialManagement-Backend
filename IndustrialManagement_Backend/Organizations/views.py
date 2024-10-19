@@ -1,7 +1,7 @@
 from .serializers import CreateOrganizationSerializer
-from IndustrialManagement_Backend.serializers import GetOrganizationSerializer, Organization, SubOrganization, CustomUser, Project
+from IndustrialManagement_Backend.serializers import GetOrganizationSerializer, Organization, SubOrganization, CustomUser, Project, CustomValidation
 from CustomUsers.permissions import IsAdmin
-from rest_framework import generics, viewsets, permissions
+from rest_framework import generics, viewsets, permissions, status
 from django.db.models import Prefetch
 from django.db.models import Q
 
@@ -82,4 +82,12 @@ class OrganizationDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return organization_permission_type_queryset(self=self)
+    
+    def perform_destroy(self, instance):
+        Organization_id = self.kwargs['pk']
+        Organization = Organization.objects.filter(id=Organization_id).first()
+        subOrganizations = SubOrganization.objects.filter(Organization=Organization).first()
+        if subOrganizations:
+            raise CustomValidation("سازمان با مرکز قابل پاک کردن نیست", "", status_code=status.HTTP_400_BAD_REQUEST)
+        return super().perform_destroy(instance)
     
