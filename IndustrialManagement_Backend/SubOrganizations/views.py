@@ -67,13 +67,11 @@ class SubOrganizationCreateView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         user = self.request.user
-        organization_id = self.request.data.get('organization')
-        organization = Organization.objects.get(id=organization_id)
-        if user.admin or organization.owner == user:
-            serializer.save(owner=user, organization=organization)
+        if user.admin:
+            return super().perform_create(serializer)
         else:
             raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
-
+    
 class SubOrganizationUpdateView(generics.UpdateAPIView):
     queryset = SubOrganization.objects.all()
     serializer_class = CreateSubOrganizationSerializer
@@ -82,6 +80,13 @@ class SubOrganizationUpdateView(generics.UpdateAPIView):
     def get_queryset(self):
         return subOrganization_permission_type_queryset(self=self) 
     
+    def perform_update(self, serializer):
+        user = self.request.user
+        if user.admin:
+            return super().perform_update(serializer)
+        else:
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
+    
 class SubOrganizationDeleteView(generics.DestroyAPIView):
     queryset = SubOrganization.objects.all()
     serializer_class = GetSubOrganizationSerializer
@@ -89,4 +94,11 @@ class SubOrganizationDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return subOrganization_permission_type_queryset(self=self)
+    
+    def perform_destroy(self, instance):
+        user = self.request.user
+        if user.admin:
+            return super().perform_destroy(instance)
+        else:
+            raise CustomValidation("شما اجازه این کار را ندارید", "", status_code=status.HTTP_401_UNAUTHORIZED)
     
