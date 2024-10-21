@@ -19,7 +19,7 @@ class PieScaleViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return scale_type_queryset(self=self)
+        return scale_type_queryset(self=self).all()
 
 class PieScaleShowByProjectViewSet(viewsets.ModelViewSet):
     serializer_class = GetPieScaleWithoutProjectSerializer
@@ -27,7 +27,7 @@ class PieScaleShowByProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         self.queryset = PieScale.objects.all()
-        queryset = scale_type_queryset(self=self)
+        queryset = scale_type_queryset(self=self).all()
         project_id = self.kwargs['pk']
         return queryset.filter(project_id=project_id).order_by('-create_date')
 
