@@ -18,7 +18,7 @@ class TimeScaleViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return scale_type_queryset(self=self)
+        return scale_type_queryset(self=self).all()
 
 class TimeScaleShowByProjectViewSet(viewsets.ModelViewSet):
     serializer_class = GetTimeScaleWithoutProjectSerializer
@@ -26,7 +26,7 @@ class TimeScaleShowByProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         self.queryset = TimeScale.objects.all()
-        queryset = scale_type_queryset(self=self)
+        queryset = scale_type_queryset(self=self).all()
         project_id = self.kwargs['pk']
         return queryset.filter(project_id=project_id).order_by('-create_date')
 
