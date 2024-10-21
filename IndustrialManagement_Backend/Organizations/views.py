@@ -57,7 +57,7 @@ class OrganizationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return organization_permission_type_queryset(self=self)
+        return organization_permission_type_queryset(self=self).all()
 
 class OrganizationCreateView(generics.CreateAPIView):
     queryset = Organization.objects.all()
