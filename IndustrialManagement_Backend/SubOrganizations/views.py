@@ -38,7 +38,7 @@ class SubOrganizationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return subOrganization_permission_type_queryset(self=self) 
+        return subOrganization_permission_type_queryset(self=self).all()
         
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -51,7 +51,7 @@ class SelectSubOrganizationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return subOrganization_permission_type_queryset(self=self)  
+        return subOrganization_permission_type_queryset(self=self).all()
 
 class SubOrganizationCreateView(generics.CreateAPIView):
     queryset = SubOrganization.objects.all()
