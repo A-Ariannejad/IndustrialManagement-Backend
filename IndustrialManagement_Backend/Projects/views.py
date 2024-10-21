@@ -34,7 +34,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return project_permission_type_queryset(self=self)
+        return project_permission_type_queryset(self=self).all()
     
 class ProjectCreateView(generics.CreateAPIView):
     queryset = Project.objects.all()
