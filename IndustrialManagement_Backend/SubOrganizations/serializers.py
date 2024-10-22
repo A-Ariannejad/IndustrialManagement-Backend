@@ -10,5 +10,5 @@ class CreateSubOrganizationSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['owner'] = GetCustomUserSerializer(instance.owner).data
-        ret['organization'] = GetOrganizationSerializer(instance.organization).data
+        ret['organization'] = GetOrganizationSerializer(instance.organization, context={'request': self.context['request']}).data
         return ret

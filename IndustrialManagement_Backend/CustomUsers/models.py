@@ -1,9 +1,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from CustomUserPermissions.models import CustomUserPermission
 from phonenumber_field.modelfields import PhoneNumberField
-# from SubOrganizations.models import SubOrganization
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -17,14 +15,8 @@ class UserManager(BaseUserManager):
     def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
-        permission = CustomUserPermission.objects.filter(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, user_access=True).first()
-        if permission:
-            extra_fields.setdefault('user_permissions', permission)
-        else:
-            extra_fields.setdefault('user_permissions', CustomUserPermission.objects.create(name='SuperAdmin', add_subOrganization=True, add_manager=True, add_project=True, user_access=True))
-        User_permission = CustomUserPermission.objects.filter(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False).first()
-        if not User_permission:
-            CustomUserPermission.objects.create(name='User', add_subOrganization=False, add_manager=False, add_project=False, user_access=False)
+        extra_fields.setdefault('admin', True)
+        extra_fields.setdefault('crud_project', True)
         return self.create_user(username, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -43,7 +35,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('Prof', 'Prof'),
     )
     education_level = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
-    user_permissions = models.ForeignKey(CustomUserPermission, on_delete=models.CASCADE, null=False, blank=False)
+    admin = models.BooleanField(default=False)
+    crud_project = models.BooleanField(default=False)
+    projects = models.ManyToManyField('Projects.Project', blank=True)
     subOrganizations = models.ForeignKey('SubOrganizations.SubOrganization', on_delete=models.CASCADE, null=True, blank=True)
     create_date = models.DateTimeField(auto_now_add=True)
     #############################################################################
