@@ -4,11 +4,16 @@ from IndustrialManagement_Backend.serializers import GetSubOrganizationSerialize
 from Projects.models import SubOrganization, Project
 
 class GetCustomUserProfileSerializer(serializers.ModelSerializer):
-    subOrganizations = GetSubOrganizationSerializer()
+    # subOrganizations = GetSubOrganizationSerializer()
     projects = GetProjectSerializer(many=True)
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'is_superuser', 'projects', 'subOrganizations', 'create_date']
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['subOrganizations'] = GetSubOrganizationSerializer(instance.subOrganizations, context={'request': self.context['request']}).data
+        return ret
 
 class CreateCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,5 +29,5 @@ class UpdateCustomUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False, allow_blank=True, write_only=True)
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'password', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'is_superuser', 'projects', 'subOrganizations', 'create_date']
+        fields = ['id', 'username', 'nickname', 'first_name', 'last_name', 'password', 'social_id_number', 'personal_id_number', 'mobile_phone_number', 'phone_number', 'education_level', 'admin', 'crud_project', 'projects', 'subOrganizations', 'create_date']
     
