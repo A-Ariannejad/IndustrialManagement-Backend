@@ -10,5 +10,5 @@ class CreateProjectSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['owner'] = GetCustomUserSerializer(instance.owner).data
-        ret['subOrganization'] = GetSubOrganizationSerializer(instance.subOrganization).data
+        ret['subOrganization'] = GetSubOrganizationSerializer(instance.subOrganization, context={'request': self.context['request']}).data
         return ret
