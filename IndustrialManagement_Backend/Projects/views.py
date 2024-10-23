@@ -13,9 +13,14 @@ def project_permission_type_queryset(self):
         related_projects = []
         if user.crud_project:
             related_projects = Project.objects.filter(id__in=user.projects.all())
+        sub_owner = SubOrganization.objects.filter(owner=user).all()
+        sub_related_projects = []
+        if sub_owner:
+            sub_related_projects = Project.objects.filter(id__in=sub_owner)
         queryset = self.queryset.filter(
             Q(id__in=owner_projects) |
-            Q(id__in=related_projects)
+            Q(id__in=related_projects) |
+            Q(id__in=sub_related_projects)
         )
         return queryset.distinct() 
 
