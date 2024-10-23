@@ -75,7 +75,7 @@ class CustomUserUpdateView(generics.UpdateAPIView):
             new_nickname = user.nickname
         if not new_education_level: 
             new_education_level = user.education_level
-        if new_subOrganizations: 
+        if new_subOrganizations != user.subOrganizations:
             projs = Project.objects.filter(owner=user).all()
             if projs:
                 raise CustomValidation("این کابر صاحب پروژه هایی از این مرکز است", "", status_code=status.HTTP_400_BAD_REQUEST)
