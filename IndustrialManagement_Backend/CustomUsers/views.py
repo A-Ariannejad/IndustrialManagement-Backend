@@ -76,6 +76,7 @@ class CustomUserUpdateView(generics.UpdateAPIView):
         if not new_education_level: 
             new_education_level = user.education_level
         if not new_subOrganizations: 
+            print("AAAA", new_subOrganizations)
             new_subOrganizations = user.subOrganizations
         else:
             projs = Project.objects.filter(owner=user).all()
