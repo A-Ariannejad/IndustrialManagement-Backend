@@ -61,6 +61,7 @@ class CustomUserUpdateView(generics.UpdateAPIView):
         new_nickname = self.request.data.get('nickname')
         new_education_level = self.request.data.get('education_level')
         new_password = self.request.data.get('password')
+        new_subOrganizations = self.request.data.get('subOrganizations')
         user = CustomUser.objects.filter(id=self.kwargs['pk']).first()
         x = CustomUser.objects.filter(username=new_username).first()
         if x and x != user:
@@ -74,6 +75,12 @@ class CustomUserUpdateView(generics.UpdateAPIView):
             new_nickname = user.nickname
         if not new_education_level: 
             new_education_level = user.education_level
+        if not new_subOrganizations: 
+            new_subOrganizations = user.subOrganizations
+        else:
+            projs = Project.objects.filter(owner=user).all()
+            if projs:
+                raise CustomValidation("این کابر صاحب پروژه هایی از این مرکز است", "", status_code=status.HTTP_400_BAD_REQUEST)
         if new_password:
             new_password=make_password(self.request.data.get('password'))
         else:
