@@ -75,17 +75,17 @@ class CustomUserUpdateView(generics.UpdateAPIView):
             new_nickname = user.nickname
         if not new_education_level: 
             new_education_level = user.education_level
-        if new_subOrganizations: 
+        if not new_subOrganizations: 
+            new_subOrganizations = user.subOrganizations
+        else:
             projs = Project.objects.filter(owner=user).all()
             if projs:
                 raise CustomValidation("این کابر صاحب پروژه هایی از این مرکز است", "", status_code=status.HTTP_400_BAD_REQUEST)
-        else:
-            new_subOrganizations = user.subOrganizations
         if new_password:
             new_password=make_password(self.request.data.get('password'))
         else:
             new_password=user.password
-        serializer.save(username=new_username, nickname=new_nickname, education_level=new_education_level, password=new_password)
+        serializer.save(username=new_username, nickname=new_nickname, education_level=new_education_level, password=new_password, subOrganizations=new_subOrganizations)
     
 class CustomUserDeleteView(generics.DestroyAPIView):
     queryset = CustomUser.objects.all()
