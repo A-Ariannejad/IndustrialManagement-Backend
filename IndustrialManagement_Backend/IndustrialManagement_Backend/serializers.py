@@ -15,7 +15,11 @@ def scale_type_queryset(self):
     user = self.request.user
     if user.admin:
         return self.queryset
-    user_projects = Project.objects.filter(Q(owner=user) | Q(id__in=user.projects.all()))
+    sub_related_projects = []
+    sub_owner = SubOrganization.objects.filter(owner=user).all()
+    if sub_owner:
+        sub_related_projects = Project.objects.filter(subOrganization__in=sub_owner)
+    user_projects = Project.objects.filter(Q(owner=user) | Q(id__in=user.projects.all() | Q(id__in=sub_related_projects)))
     return self.queryset.filter(project__in=user_projects)
 
 class CustomValidation(APIException):
