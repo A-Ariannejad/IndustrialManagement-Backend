@@ -69,8 +69,10 @@ class GetSubOrganization_CustomUserSerializer(serializers.ModelSerializer):
         sub_org = self.context['sub_org']
         ret = super().to_representation(instance)
         if request_user.admin or instance == request_user:
+            print(1)
             ret['projects'] = GetCustomUser_ProjectSerializer(instance.project_set.filter(subOrganization=sub_org), many=True).data
         else:
+            print(2)
             filtered_projects = instance.project_set.filter(Q(subOrganization=sub_org) & (Q(owner=request_user) | Q(id__in=request_user.projects.all())))
             ret['projects'] = GetCustomUser_ProjectSerializer(filtered_projects, many=True).data
         return ret
