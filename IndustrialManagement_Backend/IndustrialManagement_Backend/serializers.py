@@ -35,7 +35,7 @@ class CustomValidation(APIException):
 class GetCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'admin', 'crud_project', 'is_superuser', 'projects']
+        fields = ['id', 'nickname', 'admin', 'crud_project', 'is_superuser', 'projects']
 
 class GetOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
